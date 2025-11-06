@@ -16,23 +16,22 @@ class SignupReqSerializer(serializers.Serializer):
     familyCode = serializers.CharField(max_length=20)
 
 class SignupResSerializer(serializers.Serializer):
-    loginId = serializers.CharField(max_length=150, source='username')
+    loginId = serializers.CharField(source='username')
+    name = serializers.CharField()
+    birth = serializers.DateField()
+    role = serializers.CharField()
+    nickname = serializers.CharField()
     familyCode = serializers.SerializerMethodField()
     
-    class Meta:
-        model = User
-        fields = ('id', 'loginId', 'name', 'birth', 'role', 'nickname', 'familyCode', 'date_joined')
-        read_only_fields = fields
-
     def get_familyCode(self, obj):
-        return getattr(getattr(obj, 'family', None), 'code', None)
+        return obj.family.code if obj.family else None
 
 #가족코드 생성
 class FamilyCodeResSerializer(serializers.Serializer):
-    familyId = serializers.IntegerField()
-    familyCode = serializers.CharField(max_length = 20)
-    status = serializers.CharField(max_length = 20)
-    createdAt = serializers.DateTimeField()
+    familyId = serializers.IntegerField(source='id')
+    familyCode = serializers.CharField(max_length=20, source='code')
+    status = serializers.CharField(max_length=20)
+    createdAt = serializers.DateTimeField(source='created_at')
     
 #로그인
 class LoginReqSerializer(serializers.Serializer):
@@ -40,6 +39,6 @@ class LoginReqSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
 class LoginResSerializer(serializers.Serializer):
-    loginId = serializers.CharField(read_only=True)
-    access  = serializers.CharField(read_only=True)
+    loginId = serializers.CharField(source='username', read_only=True)
+    access = serializers.CharField(read_only=True)
     refresh = serializers.CharField(read_only=True)

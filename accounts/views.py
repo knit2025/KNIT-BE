@@ -54,8 +54,14 @@ class LoginIdCheckView(APIView):
     permission_classes = [permissions.AllowAny]
     
     def get(self, request):
-        login_id = request.query_params.get('loginId')
-        check = isIdTaken(login_id)
+        loginId = request.query_params.get('loginId')
+        if not loginId:
+            return Response(
+                {"message": "loginId를 입력해주세요."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        check = isIdTaken(loginId)
 
         message = (
             {"message": "id is taken"}
