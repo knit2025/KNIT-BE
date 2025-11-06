@@ -11,11 +11,11 @@ class SignupReqSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
     name = serializers.CharField(max_length=30)
     birth = serializers.DateField(required=False, allow_null=True)
-    role = serializers.CharField(max_lenth=30)
-    nickname = serializers.CharField(max_lenth=30)
-    familyCode = serializers.CharField(max_lenth=20)
+    role = serializers.CharField(max_length=30)
+    nickname = serializers.CharField(max_length=30)
+    familyCode = serializers.CharField(max_length=20)
 
-class SignipResSerializer(serializers.Serializer):
+class SignupResSerializer(serializers.Serializer):
     loginId = serializers.CharField(max_length=150, source='username')
     familyCode = serializers.SerializerMethodField()
     

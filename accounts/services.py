@@ -1,6 +1,6 @@
 import string, random
 from django.db import transaction, IntegrityError
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from rest_framework import exceptions as drf_exc
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -40,4 +40,19 @@ def createUser(validated: dict) :
     except IntegrityError:
         raise drf_exc.ValidationError({'loginId': '이미 사용 중인 아이디입니다.'})
 
-#토큰 발급
+#토큰 발급(로그인)
+def loginUser(*, loginId:str, password:str) -> dict :
+    user = authenticate(username = loginId, password = password)
+    
+    if user is None:
+        raise drf_exc.ValidationError({'detail':'아이디 또는 비밀번호가 맞지 않습니다'})
+    
+    if not user.is_active:
+        raise drf_exc.ValidationError({'detail': '비활성화된 계정입니다.'})
+
+    refresh = RefreshToken.for_user(user)
+    return {
+        'user': user,
+        'access': str(refresh.access_token),
+        'refresh': str(refresh),
+    }
