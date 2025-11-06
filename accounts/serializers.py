@@ -38,3 +38,8 @@ class FamilyCodeResSerializer(serializers.Serializer):
 class LoginReqSerializer(serializers.Serializer):
     loginId = serializers.CharField(max_length=150, source='username')
     password = serializers.CharField(write_only=True)
+
+class LoginResSerializer(serializers.Serializer):
+    loginId = serializers.CharField(read_only=True)
+    access  = serializers.CharField(read_only=True)
+    refresh = serializers.CharField(read_only=True)

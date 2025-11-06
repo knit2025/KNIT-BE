@@ -2,6 +2,7 @@ import string, random
 from django.db import transaction, IntegrityError
 from django.contrib.auth import get_user_model
 from rest_framework import exceptions as drf_exc
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Family
 from .selectors import *
@@ -38,3 +39,5 @@ def createUser(validated: dict) :
         return user
     except IntegrityError:
         raise drf_exc.ValidationError({'loginId': '이미 사용 중인 아이디입니다.'})
+
+#토큰 발급
