@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import exceptions as drf_exc
 
 from .models import Family
-from . import selectors
+from .selectors import *
 
 User = get_user_model()
 
@@ -21,11 +21,11 @@ def createFamilyAndCode() -> Family:
     return family
 
 #유저 생성
-def createUser(validated: dict) -> User :
+def createUser(validated: dict) :
     password = validated.pop('password')
     familyCode = validated.pop('familyCode', None)
 
-    family = selectors.get_active_family_by_code_or_none(familyCode)
+    family = isFamilyCodeExists(familyCode)
     if familyCode and family is None:
         raise drf_exc.ValidationError({'familyCode': '유효하지 않음'})
 
