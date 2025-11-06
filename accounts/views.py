@@ -14,8 +14,9 @@ class LoginView(APIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        loginId = serializer.validated_data['loginId']
-        password = serializer.validated_data['password']
+        
+        loginId = serializer.validated_data['username']
+        password = request.data['password']
 
         result = loginUser(loginId=loginId, password=password)
         user = result['user']
@@ -34,7 +35,11 @@ class SignupView(APIView):
         serializer.is_valid(raise_exception=True)
         user = createUser(serializer.validated_data)
 
-        result = loginUser(loginId=user.loginId, password=request.data['password'])
+        loginId = serializer.validated_data['username']
+        password = request.data['password']
+
+        result = loginUser(loginId=loginId, password=password)
+
         res = SignupResSerializer(user).data
         res['access'] = result['access']
         res['refresh'] = result['refresh']
