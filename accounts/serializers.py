@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from .models import *
 
+User = get_user_model()
+
 #회원가입
 class SignupReqSerializer(serializers.Serializer):
     loginId = serializers.CharField(max_length=150, source='username')
@@ -11,28 +13,6 @@ class SignupReqSerializer(serializers.Serializer):
     role = serializers.CharField(max_lenth=30)
     nickname = serializers.CharField(max_lenth=30)
     familyCode = serializers.CharField(max_lenth=20)
-    
-    def validate(self, attrs):
-        code = attrs.get('familyCode')
-        if code:
-            try:
-                family = Family.objects.get(code=code, status='ACTIVE')
-                attrs['family'] = family
-            except Family.DoesNotExist:
-                raise serializers.ValidationError({'familyCode': '유효하지않음'})
-        return attrs
-    
-    #비밀번호 해시로 저장
-    def create(self, validated):
-        password = validated.pop('password')
-        family = validated.pop('family', None)
-
-        user = User(**validated) 
-        if family:
-            user.family = family
-        user.set_password(password) 
-        user.save()
-        return user
 
 class SignipResSerializer(serializers.Serializer):
     loginId = serializers.CharField(max_length=150, source='username')
