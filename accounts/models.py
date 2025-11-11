@@ -6,6 +6,12 @@ class Family(models.Model):
     code = models.CharField(max_length=20, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, default='ACTIVE')
+    points = models.PositiveIntegerField(default=0) # 포인트 필드 추가
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['code']),
+        ]
 
     def __str__(self):
         return f'Family({self.id}, {self.code})'
