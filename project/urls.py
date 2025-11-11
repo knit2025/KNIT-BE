@@ -32,5 +32,5 @@ urlpatterns = [
     path("api/accounts/", include("accounts.urls")),
     path("api/adminqa/", include("adminqa.urls")),
     path("api/home/", include("main.urls")),
-
+    path("api/customqa/", include("customqa.urls")),
 ]
