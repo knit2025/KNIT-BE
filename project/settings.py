@@ -38,10 +38,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
     'rest_framework',
-    'rest_framework_simplejwt',
+    #'rest_framework_simplejwt',
     'accounts',
-    'mission'
+    'missions',
+    'adminqa',
+    'customqa',
+    'main', #홈 화면
 ]
 
 AUTH_USER_MODEL = 'accounts.User' 
