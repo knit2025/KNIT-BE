@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'rest_framework',
     #'rest_framework_simplejwt',
     'accounts',
-    'missions',
-    'adminqa',
-    'customqa',
-    'main',
+    #'missions',
+    #'adminqa',
+    #'customqa',
+    #'main',
 ]
 
 AUTH_USER_MODEL = 'accounts.User' 
