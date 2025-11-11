@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     #'rest_framework_simplejwt',
     'accounts',
     #'missions',
-    'adminqa',
-    'customqa',
-    'main', #홈 화면
+    #'adminqa',
+    #'customqa',
+    #'main',
 ]
 
 AUTH_USER_MODEL = 'accounts.User' 
