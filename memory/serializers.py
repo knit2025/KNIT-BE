@@ -53,12 +53,29 @@ class MemoryFQInstanceResSerializer(serializers.ModelSerializer):
             'isCurrent', 'status', 'createdAt', 'familyId'
         ]
 
+#미션 간소화
+class MemoryMissionResSerializer(serializers.ModelSerializer):
+    missionId = serializers.IntegerField(source='mission_id', read_only=True)
+    missionInstanceId = serializers.IntegerField(source='id', read_only=True)
+    title = serializers.CharField(source='mission.title', read_only=True)
+    text = serializers.CharField(source='mission.content', read_only=True)
+    isCompleted = serializers.BooleanField()
+    completedDate = serializers.DateField()
+    createdAt = serializers.DateTimeField()
+    familyId = serializers.IntegerField(source='family_id', read_only=True)
 
+    class Meta:
+        model = MissionInstance
+        fields = [
+            'missionId', 'missionInstanceId', 'title', 'text',
+            'isCompleted', 'completedDate', 'createdAt', 'familyId'
+        ]
+        
 # 통합 추억 응답
 class MemoriesResSerializer(serializers.Serializer):
     counts = serializers.DictField()
     posts = PostResSerializer(many=True)
-    missions = MissionDetailResSerializer(many=True)
+    missions = MemoryMissionResSerializer(many=True)
     familyQuestionInstances = MemoryFQInstanceResSerializer(many=True)
 
 

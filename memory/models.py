@@ -6,11 +6,11 @@ User = settings.AUTH_USER_MODEL
 
 
 class Post(models.Model):
-    # 가족 게시글 - 추억 기록용
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     text = models.TextField()
     image = models.CharField(max_length=500, blank=True, null=True)  # 이미지 URL 또는 경로
-    date = models.DateField()  # 게시글 날짜
+    date = models.DateField()  
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
