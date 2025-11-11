@@ -3,10 +3,10 @@ from .models import *
 
 # 오늘의 질문 반환
 class TodayMissionResSerializer(serializers.Serializer):
-    missionId = serializers.IntegerField(source='id')
-    missionInstanceId = serializers.IntegerField(source='mission_instance_id')
-    title = serializers.CharField()
-    content = serializers.TextField()
+    missionId = serializers.IntegerField(source='mission_id')
+    missionInstanceId = serializers.IntegerField(source='id')
+    title = serializers.CharField(source='mission.title')
+    content = serializers.CharField(source='mission.content')
     isCompleted = serializers.BooleanField()
 
 # 완료된 미션 목록 반환
