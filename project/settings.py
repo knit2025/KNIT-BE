@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     #'rest_framework_simplejwt',
     'accounts',
-    'missions',
+    'mission',
     'adminqa',
     'customqa',
     'main', #홈 화면
