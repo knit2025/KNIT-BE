@@ -5,9 +5,7 @@ from .models import CustomQ, CustomQAnswer
 User = get_user_model()
 
 
-# -----------------------
 # 질문 (CustomQ)
-# -----------------------
 class CustomQCreateReqSerializer(serializers.Serializer):
     text = serializers.CharField()
     toUserId = serializers.IntegerField(required=False, allow_null=True)
@@ -35,9 +33,7 @@ class CustomQResSerializer(serializers.ModelSerializer):
         ]
 
 
-# -----------------------
 # 답변 (CustomQAnswer)
-# -----------------------
 class CustomQAnswerReqSerializer(serializers.Serializer):
     content = serializers.CharField()
     isAnonymous = serializers.BooleanField(default=False)
