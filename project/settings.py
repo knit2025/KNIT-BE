@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'mission',
     'adminqa',
     'customqa',
+    'memory',
     'main', #홈 화면
 ]
 
