@@ -28,7 +28,9 @@ urlpatterns = [
     path("api/auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
-    # accounts 앱 라우팅 (회원가입, 로그인 등)
+    # 앱 라우팅
     path("api/accounts/", include("accounts.urls")),
+    path("api/adminqa/", include("adminqa.urls")),
+    path("api/home/", include("main.urls")),
 
 ]
