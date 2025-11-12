@@ -19,15 +19,18 @@ class MemoriesView(APIView):
         limit = int(request.query_params.get('limit', 10))
         offset = int(request.query_params.get('offset', 0))
 
-
-        # 개수
+        
         counts = countFamilyMemories(family=family)
+        posts = getFamilyPosts(family=family, limit=limit, offset=offset)
+        missions = getFamilyMissions(family=family, limit=limit, offset=offset)
+        fqInstances = getFamilyAdminQuestions(family=family, limit=limit, offset=offset)
+
 
         data = {
             'counts': counts,
-            'posts': PostResSerializer(many=True).data,
-            'missions': MemoryMissionResSerializer(many=True).data,
-            'familyQuestionInstances': MemoryFQInstanceResSerializer(many=True).data,
+            'posts': PostResSerializer(posts,many=True).data,
+            'missions': MemoryMissionResSerializer(missions,many=True).data,
+            'familyQuestionInstances': MemoryFQInstanceResSerializer(fqInstances,many=True).data,
         }
 
         return Response(data, status=200)
@@ -51,7 +54,7 @@ class FilteredMemoriesView(APIView):
         elif memoryType == 'mission':
             items = getFamilyMissions(family=family, limit=limit, offset=offset)
             serialized = MemoryMissionResSerializer(items, many=True).data
-        elif memoryType == 'familyQuestion':
+        elif memoryType == 'familyqa':
             items = getFamilyAdminQuestions(family=family, limit=limit, offset=offset)
             serialized = MemoryFQInstanceResSerializer(items, many=True).data
         else:
@@ -108,7 +111,7 @@ class PostDetailView(APIView):
         
         newText = ser.validated_data.get('text', post.text)
         newImage = ser.validated_data.get('image', post.image)
-        newDate = ser.validated_data.get('date', post.postDate)
+        newDate = ser.validated_data.get('date', post.date)
 
         # 서비스 레이어가 전체 업데이트만 받는다면 기존 값 채워서 호출
         updatedPost = updatePost(

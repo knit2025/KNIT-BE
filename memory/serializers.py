@@ -11,7 +11,7 @@ User = get_user_model()
 # Post 관련
 class PostCreateReqSerializer(serializers.Serializer):
     text = serializers.CharField()
-    image = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    image = serializers.ImageField(required=False,allow_null=True)
     date = serializers.DateField()
 
 
@@ -19,7 +19,7 @@ class PostResSerializer(serializers.ModelSerializer):
     postId = serializers.IntegerField(source='id', read_only=True)
     userId = serializers.IntegerField(source='user_id', read_only=True)
     text = serializers.CharField()
-    image = serializers.CharField(allow_null=True)
+    image = serializers.ImageField(required=False,allow_null=True)
     date = serializers.DateField()
     createdAt = serializers.DateTimeField(source='created_at', read_only=True)
     

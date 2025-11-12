@@ -9,7 +9,7 @@ class Post(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     text = models.TextField()
-    image = models.CharField(max_length=500, blank=True, null=True)  # 이미지 URL 또는 경로
+    image = models.ImageField(null = True, blank=True, upload_to="memory/")  # 이미지 URL 또는 경로
     date = models.DateField()  
     created_at = models.DateTimeField(auto_now_add=True)
 

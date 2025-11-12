@@ -25,5 +25,6 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("adminqa/", include("adminqa.urls")),
     path("missions/", include('mission.urls')),
-    path("customqa/", include("customqa.urls"))
+    path("customqa/", include("customqa.urls")),
+    path("memory/",include("memory.urls") )
 ]
