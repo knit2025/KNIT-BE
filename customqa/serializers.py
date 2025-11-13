@@ -8,7 +8,9 @@ User = get_user_model()
 # 질문 (CustomQ)
 class CustomQCreateReqSerializer(serializers.Serializer):
     text = serializers.CharField()
-    toUserId = serializers.IntegerField(required=False, allow_null=True)
+    isAnonymous = serializers.BooleanField()
+    isPublic = serializers.BooleanField()
+    toUser = serializers.CharField()
 
 
 class CustomQResSerializer(serializers.ModelSerializer):
@@ -18,10 +20,19 @@ class CustomQResSerializer(serializers.ModelSerializer):
     toUserId = serializers.IntegerField(source='to_user_id', read_only=True, allow_null=True)
 
     text = serializers.CharField()
+    isAnonymous = serializers.BooleanField(source='is_anonymous', read_only=True)
+    isPublic = serializers.BooleanField(source='is_public', read_only=True)
     createdAt = serializers.DateTimeField(source='created_at', read_only=True)
 
     fromUsername = serializers.CharField(source='from_user.username', read_only=True)
     toUsername = serializers.CharField(source='to_user.username', read_only=True, allow_null=True)
+    
+    displayFromName = serializers.SerializerMethodField()
+
+    def get_displayFromName(self, obj: CustomQ) -> str:
+        if obj.is_anonymous:
+            return '익명'
+        return getattr(obj.from_user, 'nickname', None) or getattr(obj.from_user, 'username', '')
 
     class Meta:
         model = CustomQ

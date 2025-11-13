@@ -12,6 +12,7 @@ from .selectors import (
     list_family_questions, get_question_or_none, list_answers_for_question, has_user_answered
 )
 from .services import create_question, create_or_update_answer
+from accounts.models import *
 
 User = get_user_model()
 
@@ -26,11 +27,14 @@ class CreateQuestionView(APIView):
 
         if not request.user.family:
             return Response({'detail': '가족이 없습니다.'}, status=400)
-
+        
         q = create_question(
             user=request.user,
             text=ser.validated_data['text'],
-            to_user_id=ser.validated_data.get('toUserId')
+            to_user_role=ser.validated_data.get('toUser'),
+            is_anonymous=ser.validated_data.get('isAnonymous', False),
+            is_public=ser.validated_data.get('isPublic', True)
+            
         )
         return Response(CustomQResSerializer(q).data, status=201)
 

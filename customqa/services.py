@@ -15,23 +15,31 @@ def _validate_same_family(*, me: User, target: User | None):
 
 
 @transaction.atomic
-def create_question(*, user: User, text: str, to_user_id: int | None = None) -> CustomQ:
+def create_question(*, user: User, text: str, to_user_role: str | None = None, is_anonymous: bool = False,is_public: bool = True) -> CustomQ:
     if not user.family:
         raise drf_exc.ValidationError({'detail': '가족이 없는 사용자입니다.'})
 
     to_user = None
-    if to_user_id is not None:
+    if to_user_role is not None:
         try:
-            to_user = User.objects.get(id=to_user_id, is_active=True)
+            to_user = User.objects.get(
+                family=user.family, 
+                role=to_user_role, 
+                is_active=True
+            )
         except User.DoesNotExist:
-            raise drf_exc.ValidationError({'toUserId': '존재하지 않는 사용자입니다.'})
-        _validate_same_family(me=user, target=to_user)
+            raise drf_exc.ValidationError({'toUser': '해당 역할의 사용자를 찾을 수 없습니다.'})
+        except User.MultipleObjectsReturned:
+            raise drf_exc.ValidationError({'toUser': '동일한 역할의 사용자가 여러 명입니다.'})
+        ㄴ
 
     q = CustomQ.objects.create(
         family=user.family,
         from_user=user,
         to_user=to_user,
-        text=text
+        text=text,
+        is_anonymous=is_anonymous,
+        is_public=is_public
     )
     return q
 
