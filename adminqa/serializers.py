@@ -103,3 +103,32 @@ class FamilyRewardResSerializer(serializers.Serializer):
     reason = serializers.CharField(required=False, allow_null=True)
     answered = serializers.IntegerField(required=False, allow_null=True)
     total = serializers.IntegerField(required=False, allow_null=True)
+
+# adminq/serializers.py (기존 코드에 추가)
+
+# AdminQ 상세 응답 전용 Serializer
+class AdminQDetailResSerializer(serializers.ModelSerializer):
+    instanceId = serializers.IntegerField(source='id', read_only=True)
+    familyId = serializers.IntegerField(source='family_id', read_only=True)
+    adminQId = serializers.IntegerField(source='admin_q_id', read_only=True)
+    
+    text = serializers.CharField(source='admin_q.text', read_only=True)
+    status = serializers.CharField()
+    isCurrent = serializers.BooleanField(source='is_current')
+    exp = serializers.IntegerField()
+    createdAt = serializers.DateTimeField(source='created_at', read_only=True)
+    
+    # 추가 정보
+    myAnswered = serializers.BooleanField(read_only=True)
+    totalAnswers = serializers.IntegerField(read_only=True)
+    
+    # 답변 목록
+    answers = AdminQAnswerResSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = FamilyQuestionInstance
+        fields = [
+            'instanceId', 'familyId', 'adminQId',
+            'text', 'status', 'isCurrent', 'exp', 'createdAt',
+            'myAnswered', 'totalAnswers', 'answers'
+        ]
