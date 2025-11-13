@@ -174,4 +174,6 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
   'http://knit-meotsa.vercel.app',
   'https://knit-meotsa.vercel.app',
+  "http://localhost:5173",
+  "https://localhost:5173"
 ]
