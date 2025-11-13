@@ -21,7 +21,7 @@ class CustomQResSerializer(serializers.ModelSerializer):
 
     text = serializers.CharField()
     isAnonymous = serializers.BooleanField(source='is_anonymous', read_only=True)
-    isPublic = serializers.BooleanField(source='is_public', read_only=True)s
+    isPublic = serializers.BooleanField(source='is_public', read_only=True)
     createdAt = serializers.DateTimeField(source='created_at', read_only=True)
 
     fromUsername = serializers.CharField(source='from_user.username', read_only=True)
