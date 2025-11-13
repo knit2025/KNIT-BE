@@ -10,7 +10,7 @@ from .selectors import (
     get_instance_by_id, list_answers_for_instance,
     has_user_answered, count_answers, get_current_instance_for_family
 )
-from .services import create_or_update_answer, reward_if_all_answered, create_answer_once #수정된서비스로 교체
+from .services import reward_if_all_answered, create_answer_once #수정된서비스로 교체
 
 class TodayQuestionView(APIView):
     permission_classes = [permissions.IsAuthenticated]
