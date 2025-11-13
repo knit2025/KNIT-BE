@@ -28,18 +28,12 @@ class CreateQuestionView(APIView):
         if not request.user.family:
             return Response({'detail': '가족이 없습니다.'}, status=400)
         
-        family = request.user.family
-        role = ser.validated_data['toUser']
-        try:
-            toUser = User.objects.get(family=family, role=role)
-            to_user_id = toUser.id
-        except User.DoesNotExist:
-            return Response({'detail': '해당 역할의 사용자를 찾을 수 없습니다.'}, status=400)
-
         q = create_question(
             user=request.user,
             text=ser.validated_data['text'],
-            to_user_id=to_user_id
+            to_user_role=ser.validated_data.get('toUser'),
+            is_anonymous=ser.validated_data.get('isAnonymous', False),
+            is_public=ser.validated_data.get('isPublic', True)
             
         )
         return Response(CustomQResSerializer(q).data, status=201)
