@@ -8,7 +8,9 @@ User = get_user_model()
 # 질문 (CustomQ)
 class CustomQCreateReqSerializer(serializers.Serializer):
     text = serializers.CharField()
-    toUserId = serializers.IntegerField(required=False, allow_null=True)
+    isAnonymous = serializers.BooleanField()
+    isPublic = serializers.BooleanField()
+    toUser = serializers.CharField()
 
 
 class CustomQResSerializer(serializers.ModelSerializer):

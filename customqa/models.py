@@ -20,6 +20,9 @@ class CustomQ(models.Model):
     )
 
     text = models.TextField()
+    is_anonymous = models.BooleanField(default=False, help_text='질문자 익명 여부')
+    is_public = models.BooleanField(default=True, help_text='질문 공개 여부')
+    
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

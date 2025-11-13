@@ -12,6 +12,7 @@ from .selectors import (
     list_family_questions, get_question_or_none, list_answers_for_question, has_user_answered
 )
 from .services import create_question, create_or_update_answer
+from accounts.models import *
 
 User = get_user_model()
 
@@ -26,11 +27,20 @@ class CreateQuestionView(APIView):
 
         if not request.user.family:
             return Response({'detail': '가족이 없습니다.'}, status=400)
+        
+        family = request.user.family
+        role = ser.validated_data['toUser']
+        try:
+            toUser = User.objects.get(family=family, role=role)
+            to_user_id = toUser.id
+        except User.DoesNotExist:
+            return Response({'detail': '해당 역할의 사용자를 찾을 수 없습니다.'}, status=400)
 
         q = create_question(
             user=request.user,
             text=ser.validated_data['text'],
-            to_user_id=ser.validated_data.get('toUserId')
+            to_user_id=to_user_id
+            
         )
         return Response(CustomQResSerializer(q).data, status=201)
 
