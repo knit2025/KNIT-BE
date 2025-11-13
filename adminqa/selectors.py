@@ -31,3 +31,16 @@ def count_answers(instance: FamilyQuestionInstance) -> int:
 
 def count_distinct_family_members(family) -> int:
     return User.objects.filter(family=family, is_active=True).count()
+
+def get_instance_detail(*, instance_id: int, family) -> FamilyQuestionInstance | None:
+    try:
+        return FamilyQuestionInstance.objects.select_related(
+            'admin_q', 'family'
+        ).prefetch_related(
+            'answers__user'  # 답변과 답변 작성자 미리 로드
+        ).get(
+            id=instance_id,
+            family=family
+        )
+    except FamilyQuestionInstance.DoesNotExist:
+        return None
