@@ -10,7 +10,7 @@ from .selectors import (
     get_instance_by_id, list_answers_for_instance,
     has_user_answered, count_answers, get_current_instance_for_family
 )
-from .services import create_or_update_answer, reward_if_all_answered
+from .services import reward_if_all_answered, create_answer_once #수정된서비스로 교체
 
 class TodayQuestionView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -33,7 +33,7 @@ class CreateAnswerView(APIView):
     def post(self, request):
         ser = self.serializer_class(data=request.data)
         ser.is_valid(raise_exception=True)
-        answer = create_or_update_answer(
+        answer = create_answer_once(
             user=request.user,
             instance_id=ser.validated_data.get('instanceId'),
             content=ser.validated_data['content'],
