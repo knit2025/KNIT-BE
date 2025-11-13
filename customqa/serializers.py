@@ -24,8 +24,8 @@ class CustomQResSerializer(serializers.ModelSerializer):
     isPublic = serializers.BooleanField(source='is_public', read_only=True)
     createdAt = serializers.DateTimeField(source='created_at', read_only=True)
 
-    fromUsername = serializers.CharField(source='from_user.username', read_only=True)
-    toUsername = serializers.CharField(source='to_user.username', read_only=True, allow_null=True)
+    fromUsername = serializers.CharField(source='from_user.name', read_only=True)
+    toUsername = serializers.CharField(source='to_user.name', read_only=True, allow_null=True)
     
     displayFromName = serializers.SerializerMethodField()
 
@@ -40,7 +40,7 @@ class CustomQResSerializer(serializers.ModelSerializer):
             'customQId', 'familyId',
             'fromUserId', 'fromUsername',
             'toUserId', 'toUsername',
-            'text', 'createdAt'
+            'text', 'isAnonymous', 'isPublic','createdAt'
         ]
 
 

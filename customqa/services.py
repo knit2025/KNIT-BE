@@ -31,7 +31,7 @@ def create_question(*, user: User, text: str, to_user_role: str | None = None, i
             raise drf_exc.ValidationError({'toUser': '해당 역할의 사용자를 찾을 수 없습니다.'})
         except User.MultipleObjectsReturned:
             raise drf_exc.ValidationError({'toUser': '동일한 역할의 사용자가 여러 명입니다.'})
-        ㄴ
+        
 
     q = CustomQ.objects.create(
         family=user.family,
