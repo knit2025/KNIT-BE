@@ -31,7 +31,7 @@ class CreateQuestionView(APIView):
         q = create_question(
             user=request.user,
             text=ser.validated_data['text'],
-            to_user_role=ser.validated_data.get('toUser'),
+            to_user_id=ser.validated_data.get('toUser'), 
             is_anonymous=ser.validated_data.get('isAnonymous', False),
             is_public=ser.validated_data.get('isPublic', True)
             
