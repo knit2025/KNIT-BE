@@ -1,6 +1,21 @@
 from rest_framework import serializers
 from .models import *
 
+#가족 미션 확인용 시리얼라이저
+class MissionInstanceUserResSerializer(serializers.ModelSerializer):
+    userId = serializers.IntegerField(source='user_id', read_only=True)
+    username = serializers.CharField(source='user.username', read_only=True)
+    nickname = serializers.CharField(source='user.nickname', read_only=True)
+
+    class Meta:
+        model = MissionInstanceUser
+        fields = [
+            'userId', 'username', 'nickname',
+            'isSubmitted', 'opinion', 'image',
+            'createdAt', 'updatedAt',
+        ]
+
+
 # 오늘의 질문 반환
 class TodayMissionResSerializer(serializers.Serializer):
     missionId = serializers.IntegerField(source='mission_id')
@@ -8,6 +23,14 @@ class TodayMissionResSerializer(serializers.Serializer):
     title = serializers.CharField(source='mission.title')
     content = serializers.CharField(source='mission.content')
     isCompleted = serializers.BooleanField()
+    userMissions = MissionInstanceUserResSerializer(many=True, read_only=True)
+
+
+    def get_allSubmitted(self, obj):
+        user_missions = obj.userMissions.all()
+        if not user_missions.exists():
+            return False
+        return all(um.isSubmitted for um in user_missions)
 
 # 완료된 미션 목록 반환
 class CompletedMissionListResSerializer(serializers.Serializer):

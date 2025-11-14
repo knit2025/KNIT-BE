@@ -28,7 +28,12 @@ def getTodayMission(family):
             mission=available_mission,
             family=family
         )
-        return new_mission_instance
+        return (
+            MissionInstance.objects
+            .select_related('mission')
+            .prefetch_related('userMissions__user')
+            .get(pk=new_mission_instance.pk)
+        )
     
     return None
 
