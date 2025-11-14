@@ -40,7 +40,7 @@ class CustomQResSerializer(serializers.ModelSerializer):
             'customQId', 'familyId',
             'fromUserId', 'fromUsername',
             'toUserId', 'toUsername',
-            'text', 'isAnonymous', 'isPublic','createdAt'
+            'text', 'isAnonymous', 'isPublic','createdAt','displayFromName',
         ]
 
 
