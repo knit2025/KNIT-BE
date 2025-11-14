@@ -42,3 +42,15 @@ class LoginResSerializer(serializers.Serializer):
     loginId = serializers.CharField(source='username', read_only=True)
     access = serializers.CharField(read_only=True)
     refresh = serializers.CharField(read_only=True)
+
+class UserSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'name', 'nickname', 'role', 'birth']
+
+class FamilyResSerializer(serializers.ModelSerializer):
+    users = UserSimpleSerializer(many=True, read_only=True)   # ← 추가 포인트
+
+    class Meta:
+        model = Family
+        fields = ['id', 'code', 'created_at', 'status', 'points', 'users']
