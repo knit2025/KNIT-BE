@@ -15,16 +15,16 @@ def _validate_same_family(*, me: User, target: User | None):
 
 
 @transaction.atomic
-def create_question(*, user: User, text: str, to_user_role: str | None = None, is_anonymous: bool = False,is_public: bool = True) -> CustomQ:
+def create_question(*, user: User, text: str,to_user_id: int | None = None, is_anonymous: bool = False,is_public: bool = True) -> CustomQ:
     if not user.family:
         raise drf_exc.ValidationError({'detail': '가족이 없는 사용자입니다.'})
 
     to_user = None
-    if to_user_role is not None:
+    if to_user_id is not None:
         try:
             to_user = User.objects.get(
+                id=to_user_id,
                 family=user.family, 
-                role=to_user_role, 
                 is_active=True
             )
         except User.DoesNotExist:

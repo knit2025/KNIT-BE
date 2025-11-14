@@ -20,7 +20,7 @@ def list_family_questions(*, family, limit=50, offset=0, to_me_only=False, me: U
     
     if to_me_only and me is not None:
         # 나에게 지정된 질문 또는 전체 대상(None)
-        qs = qs.filter(to_user__in=[None, me])
+        qs = qs.filter(Q(to_user=me) | Q(to_user__isnull=True))
     
     return qs.order_by('-created_at', '-id')[offset: offset + limit]
 

@@ -10,7 +10,7 @@ class CustomQCreateReqSerializer(serializers.Serializer):
     text = serializers.CharField()
     isAnonymous = serializers.BooleanField()
     isPublic = serializers.BooleanField()
-    toUser = serializers.CharField()
+    toUser = serializers.IntegerField(required=False, allow_null=True)
 
 
 class CustomQResSerializer(serializers.ModelSerializer):
