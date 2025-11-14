@@ -24,7 +24,7 @@ def get_or_create_today_instance_for_family(*, family) -> FamilyQuestionInstance
     if not family:
         return None
 
-    today = timezone.localdate()
+    today = timezone.now().date() # today 계산 동작 변경
 
     # 1) 오늘자 인스턴스가 이미 있는지 확인
     qs_today = (FamilyQuestionInstance.objects
