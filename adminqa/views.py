@@ -40,11 +40,31 @@ class InstanceAnswersListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, instance_id: int):
-        fqi = get_instance_by_id(instance_id)
-        if not fqi:
-            return Response({'detail': '해당 인스턴스가 없습니다.'}, status=404)
-        answers = list_answers_for_instance(fqi)
-        return Response(AdminQAnswerResSerializer(answers, many=True).data, status=200)
+        user = request.user
+
+        if not getattr(user, "family", None):
+            return Response(
+                {"error": "가족에 속해있지 않습니다."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        instance = get_instance_detail(
+            instance_id=instance_id,
+            family=user.family,
+        )
+        if not instance:
+            return Response(
+                {"detail": "해당 인스턴스가 없습니다."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = AdminQDetailResSerializer(instance)
+        data = serializer.data
+
+        data["myAnswered"] = has_user_answered(instance, user)
+        data["totalAnswers"] = count_answers(instance)
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class FamilyPointsView(APIView):
