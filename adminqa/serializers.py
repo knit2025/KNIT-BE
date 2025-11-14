@@ -47,13 +47,17 @@ class TodayInstanceResSerializer(FamilyQuestionInstanceResSerializer):
     # 진행 중 인스턴스 조회 시, 내 답변 여부/답변 수 등을 함께 내려주기 위한 응답 전용
     myAnswered = serializers.BooleanField(read_only=True)
     totalAnswers = serializers.IntegerField(read_only=True)
-
-    # ⬇ 추가: created_at의 date 부분만 잘라서 내려주기
+    # FE에서 쓰기 좋은 alias 필드
+    content = serializers.CharField(source='admin_q.text', read_only=True)
+    # created_at에서 날짜만 뽑아서 내려주기
     date = serializers.DateField(source='created_at', read_only=True)
 
     class Meta(FamilyQuestionInstanceResSerializer.Meta):
         fields = FamilyQuestionInstanceResSerializer.Meta.fields + [
-            'myAnswered', 'totalAnswers'
+            'myAnswered',
+            'totalAnswers',
+            'content',
+            'date', # date 필드 추가
         ]
 
 
