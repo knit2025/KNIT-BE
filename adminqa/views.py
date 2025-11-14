@@ -4,13 +4,17 @@ from rest_framework.views import APIView
 
 from .serializers import *
 from .selectors import *
-from .services import reward_if_all_answered, create_answer_once #수정된서비스로 교체
+from .services import reward_if_all_answered, create_answer_once, get_or_create_today_instance_for_family #수정된서비스로 교체
 
 class TodayQuestionView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        fqi = get_current_instance_for_family(family=request.user.family)
+        family = getattr(request.user, 'family', None)
+        if not family:
+            return Response({'detail': '가족이 없습니다.'}, status=404)
+
+        fqi = get_or_create_today_instance_for_family(family=family)
         if not fqi:
             return Response({'detail': '현재 진행 중인 가족 질문이 없습니다.'}, status=404)
 
@@ -18,6 +22,7 @@ class TodayQuestionView(APIView):
         data['myAnswered'] = has_user_answered(fqi, request.user)
         data['totalAnswers'] = count_answers(fqi)
         return Response(data, status=200)
+
 
 
 class CreateAnswerView(APIView):
