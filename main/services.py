@@ -1,4 +1,4 @@
-ITEMS = ['스웨터','목도리','장갑','모자','귀도리','양말','인형','조끼','슬리퍼','러그']
+ITEMS = ['스웨터','양말','슬리퍼','모자','조끼','목도리','인형','리본','장갑','단추']
 
 def compute_character_progress(total_points: int) -> dict:
     p = max(0, int(total_points or 0))
