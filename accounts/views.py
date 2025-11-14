@@ -74,3 +74,17 @@ class LoginIdCheckView(APIView):
             else {"message": "ok "}
         )
         return Response(message, status=status.HTTP_200_OK)
+    
+class FamilyCheckView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        family = user.family
+
+        if family is None:
+            return Response({'detail': '가족이 없습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        res = FamilyResSerializer(family).data
+        return Response(res, status=status.HTTP_200_OK)
+        

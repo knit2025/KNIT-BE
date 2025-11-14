@@ -13,3 +13,4 @@ def isFamilyCodeExists(code:str) :
         return Family.objects.get(code=code, status = "ACTIVE")
     except Family.DoesNotExist:
         return None
+    
