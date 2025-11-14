@@ -44,12 +44,13 @@ class LoginResSerializer(serializers.Serializer):
     refresh = serializers.CharField(read_only=True)
 
 class UserSimpleSerializer(serializers.ModelSerializer):
+    loginId = serializers.CharField(max_length=150, source='username')
     class Meta:
         model = User
-        fields = ['id', 'name', 'nickname', 'role', 'birth']
+        fields = ['id', 'loginId','name', 'nickname', 'role', 'birth']
 
 class FamilyResSerializer(serializers.ModelSerializer):
-    users = UserSimpleSerializer(many=True, read_only=True)   # ← 추가 포인트
+    users = UserSimpleSerializer(many=True, read_only=True)
 
     class Meta:
         model = Family
