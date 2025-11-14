@@ -48,6 +48,9 @@ class TodayInstanceResSerializer(FamilyQuestionInstanceResSerializer):
     myAnswered = serializers.BooleanField(read_only=True)
     totalAnswers = serializers.IntegerField(read_only=True)
 
+    # ⬇ 추가: created_at의 date 부분만 잘라서 내려주기
+    date = serializers.DateField(source='created_at', read_only=True)
+
     class Meta(FamilyQuestionInstanceResSerializer.Meta):
         fields = FamilyQuestionInstanceResSerializer.Meta.fields + [
             'myAnswered', 'totalAnswers'
