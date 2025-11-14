@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from .models import Post
 from adminqa.models import *
 from mission.serializers import *
+from mission.serializers import *
 
 User = get_user_model()
 
@@ -64,11 +65,17 @@ class MemoryMissionResSerializer(serializers.ModelSerializer):
     createdAt = serializers.DateTimeField()
     familyId = serializers.IntegerField(source='family_id', read_only=True)
 
+    userSubmissions = MissionUserInfoSerializer(
+        many=True,
+        source='userMissions', 
+        read_only=True,
+    )
+    
     class Meta:
         model = MissionInstance
         fields = [
             'missionId', 'missionInstanceId', 'title', 'text',
-            'isCompleted', 'completedDate', 'createdAt', 'familyId'
+            'isCompleted', 'completedDate', 'createdAt', 'familyId','userSubmissions'
         ]
         
 # 통합 추억 응답
