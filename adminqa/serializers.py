@@ -47,11 +47,16 @@ class TodayInstanceResSerializer(FamilyQuestionInstanceResSerializer):
     # 진행 중 인스턴스 조회 시, 내 답변 여부/답변 수 등을 함께 내려주기 위한 응답 전용
     myAnswered = serializers.BooleanField(read_only=True)
     totalAnswers = serializers.IntegerField(read_only=True)
-    # FE에서 쓰기 좋은 alias 필드
     content = serializers.CharField(source='admin_q.text', read_only=True)
-    # created_at에서 날짜만 뽑아서 내려주기
-    date = serializers.DateField(source='created_at', read_only=True)
 
+    # DateField 대신 직접 처리
+    date = serializers.SerializerMethodField(read_only=True)
+
+    def get_date(self, obj):
+        # created_at 이 datetime이어도 여기서 안전하게 date로 잘라서 문자열로 반환
+        if obj.created_at:
+            return obj.created_at.date().isoformat()
+        return None
     class Meta(FamilyQuestionInstanceResSerializer.Meta):
         fields = FamilyQuestionInstanceResSerializer.Meta.fields + [
             'myAnswered',
